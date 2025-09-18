@@ -86,8 +86,3 @@ secrets.yml
 *.bak
 *.backup
 *.old
-
-# Compiled binaries
-action-house-api
-terndotenv
-api
