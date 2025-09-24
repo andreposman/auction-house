@@ -2,7 +2,9 @@ package validator
 
 import (
 	"context"
+	"regexp"
 	"strings"
+	"unicode/utf8"
 )
 
 type Validator interface {
@@ -10,6 +12,8 @@ type Validator interface {
 }
 
 type Evaluator map[string]string
+
+var EmailRegex = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
 
 func (e *Evaluator) AddFieldError(key, message string) {
 	if *e == nil {
@@ -29,4 +33,16 @@ func (e *Evaluator) CheckField(ok bool, key, message string) {
 
 func NotBlank(value string) bool {
 	return strings.TrimSpace(value) != ""
+}
+
+func MaxChars(value string, n int) bool {
+	return utf8.RuneCountInString(value) <= n
+}
+
+func MinChars(value string, n int) bool {
+	return utf8.RuneCountInString(value) >= n
+}
+
+func Matches(value string, regx *regexp.Regexp) bool {
+	return regx.MatchString(value)
 }

@@ -14,7 +14,7 @@ import (
 const createUser = `-- name: CreateUser :one
 INSERT INTO users ("user_name", "email", "password_hash", "bio")
 VALUES ($1, $2, $3, $4)
-RETURNING id, user_name, email, password_hash, bio, created_at, updated_at
+RETURNING id
 `
 
 type CreateUserParams struct {
@@ -24,24 +24,16 @@ type CreateUserParams struct {
 	Bio          string `json:"bio"`
 }
 
-func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) {
+func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (uuid.UUID, error) {
 	row := q.db.QueryRow(ctx, createUser,
 		arg.UserName,
 		arg.Email,
 		arg.PasswordHash,
 		arg.Bio,
 	)
-	var i User
-	err := row.Scan(
-		&i.ID,
-		&i.UserName,
-		&i.Email,
-		&i.PasswordHash,
-		&i.Bio,
-		&i.CreatedAt,
-		&i.UpdatedAt,
-	)
-	return i, err
+	var id uuid.UUID
+	err := row.Scan(&id)
+	return id, err
 }
 
 const getUserByEmail = `-- name: GetUserByEmail :one
