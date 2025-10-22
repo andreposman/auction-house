@@ -3,11 +3,11 @@ services:
     image: postgres:latest
     restart: unless-stopped
     ports:
-      - ${ACTION_HOUSE_DB_PORT:-5432}:5432
+      - ${AUCTION_HOUSE_DB_PORT:-5432}:5432
     environment:
-      POSTGRES_USER: ${ACTION_HOUSE_DB_USER}
-      POSTGRES_PASSWORD: ${ACTION_HOUSE_DB_PASSWORD}
-      POSTGRES_DB: ${ACTION_HOUSE_DB_NAME}
+      POSTGRES_USER: ${AUCTION_HOUSE_DB_USER}
+      POSTGRES_PASSWORD: ${AUCTION_HOUSE_DB_PASSWORD}
+      POSTGRES_DB: ${AUCTION_HOUSE_DB_NAME}
     volumes:
       - db:/var/lib/postgresql/data
 

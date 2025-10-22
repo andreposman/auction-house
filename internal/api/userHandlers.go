@@ -2,7 +2,6 @@ package api
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 
 	"github.com/andreposman/auction-house-api/internal/jsonutils"
@@ -17,13 +16,6 @@ func (api *API) handleSignupUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Printf("\n\nUsername(Len: %v): %v \n", len(data.UserName), data.UserName)
-	fmt.Printf("Email(Len: %v): %v \n", len(data.Email), data.Email)
-	fmt.Printf("Bio(Len: %v): %v \n", len(data.Bio), data.Bio)
-	fmt.Printf("Password(Len: %v): %v \n", len(data.Password), data.Password)
-
-	fmt.Printf("\nRequest: %v \n", data)
-
 	id, err := api.UserService.CreateUser(r.Context(),
 		data.UserName,
 		data.Email,
@@ -37,8 +29,8 @@ func (api *API) handleSignupUser(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		_ = jsonutils.Encode(w, r, http.StatusUnprocessableEntity, map[string]any{
-			"user_id": id,
+		_ = jsonutils.Encode(w, r, http.StatusInternalServerError, map[string]any{
+			"error": "internal server error",
 		})
 		return
 	}
@@ -63,15 +55,13 @@ func (api *API) handleLoginUser(w http.ResponseWriter, r *http.Request) {
 			})
 			return
 		}
-		fmt.Println(err)
-		jsonutils.Encode(w, r, http.StatusOK, map[string]any{
+		jsonutils.Encode(w, r, http.StatusInternalServerError, map[string]any{
 			"error": "unexpected internal server error",
 		})
 		return
 	}
 	//? middleware global que lida com todas as reqs
 	err = api.Sessions.RenewToken(r.Context())
-	fmt.Println("renew token error: ", err)
 	if err != nil {
 		jsonutils.Encode(w, r, http.StatusInternalServerError, map[string]any{
 			"error": "unexpected server error",
@@ -87,9 +77,7 @@ func (api *API) handleLoginUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (api *API) handleLogoutUser(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("logout route")
 	err := api.Sessions.RenewToken(r.Context())
-	fmt.Println("renew token error: ", err)
 	if err != nil {
 		jsonutils.Encode(w, r, http.StatusInternalServerError, map[string]any{
 			"error": "unexpected server error",

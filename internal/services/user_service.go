@@ -52,8 +52,6 @@ func (us *UserService) CreateUser(ctx context.Context, userName, email, password
 		return uuid.UUID{}, err
 	}
 
-	fmt.Println("User created sucessfully: ", id)
-
 	return id, nil
 }
 

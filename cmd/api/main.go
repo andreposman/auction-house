@@ -58,11 +58,11 @@ func main() {
 
 func buildDatabaseConnString() string {
 	connString := fmt.Sprintf("user=%s password=%s host=%s port=%s dbname=%s",
-		os.Getenv("ACTION_HOUSE_DB_USER"),
-		os.Getenv("ACTION_HOUSE_DB_PASSWORD"),
-		os.Getenv("ACTION_HOUSE_DB_HOST"),
-		os.Getenv("ACTION_HOUSE_DB_PORT"),
-		os.Getenv("ACTION_HOUSE_DB_NAME"),
+		os.Getenv("AUCTION_HOUSE_DB_USER"),
+		os.Getenv("AUCTION_HOUSE_DB_PASSWORD"),
+		os.Getenv("AUCTION_HOUSE_DB_HOST"),
+		os.Getenv("AUCTION_HOUSE_DB_PORT"),
+		os.Getenv("AUCTION_HOUSE_DB_NAME"),
 	)
 	return connString
 }
