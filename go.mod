@@ -1,8 +1,10 @@
-module github.com/andreposman/action-house-api
+module github.com/andreposman/auction-house-api
 
 go 1.25.0
 
 require (
+	github.com/alexedwards/scs/pgxstore v0.0.0-20250417082927-ab20b3feb5e9
+	github.com/alexedwards/scs/v2 v2.9.0
 	github.com/go-chi/chi/v5 v5.2.3
 	github.com/google/uuid v1.6.0
 	github.com/jackc/pgx/v5 v5.7.6

@@ -3,7 +3,7 @@ package user
 import (
 	"context"
 
-	"github.com/andreposman/action-house-api/internal/validator"
+	"github.com/andreposman/auction-house-api/internal/validator"
 )
 
 type CreateUserReq struct {

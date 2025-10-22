@@ -5,9 +5,12 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"time"
 
-	"github.com/andreposman/action-house-api/internal/api"
-	"github.com/andreposman/action-house-api/internal/services"
+	"github.com/alexedwards/scs/pgxstore"
+	"github.com/alexedwards/scs/v2"
+	"github.com/andreposman/auction-house-api/internal/api"
+	"github.com/andreposman/auction-house-api/internal/services"
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/joho/godotenv"
@@ -32,6 +35,12 @@ func main() {
 	if err := pool.Ping(ctx); err != nil {
 		panic(err)
 	}
+
+	s := scs.New()
+	s.Store = pgxstore.New(pool)
+	s.Lifetime = 24 * time.Hour
+	s.Cookie.HttpOnly = true
+	s.Cookie.SameSite = http.SameSiteLaxMode //? restringe o envio entre reqs de outras origens
 
 	api := api.API{
 		Router:      chi.NewMux(),

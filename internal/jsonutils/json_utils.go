@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/andreposman/action-house-api/internal/validator"
+	"github.com/andreposman/auction-house-api/internal/validator"
 )
 
 func Encode[T any](w http.ResponseWriter, r *http.Request, statusCode int, payload T) error {
