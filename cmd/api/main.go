@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/gob"
 	"fmt"
 	"net/http"
 	"os"
@@ -12,12 +13,15 @@ import (
 	"github.com/andreposman/auction-house-api/internal/api"
 	"github.com/andreposman/auction-house-api/internal/services"
 	"github.com/go-chi/chi/v5"
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/joho/godotenv"
 )
 
 func main() {
 	fmt.Println("Auction House API")
+
+	gob.Register(uuid.UUID{})
 
 	if err := godotenv.Load(); err != nil {
 		panic(err)
@@ -45,6 +49,7 @@ func main() {
 	api := api.API{
 		Router:      chi.NewMux(),
 		UserService: services.NewUserService(pool),
+		Sessions:    s,
 	}
 
 	api.BindRoutes()
