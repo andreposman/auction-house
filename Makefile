@@ -16,7 +16,6 @@ db-start: ## Start database
 
 db-stop: ## Stop database
 	docker-compose down
-
 run: ## Run the app with air (hot reload)
 	air
 
@@ -26,3 +25,4 @@ migrate: ## Run database migrations
 	tern migrate --config tern.conf
 
 dev: db-start migrate run ## Start database, run migrations, and run app
+
